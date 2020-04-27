@@ -27,7 +27,7 @@ body {
 	background-color: lightgrey;
 	text-shadow: 1px 1px lightgrey;
 }
-#login {
+#menu {
 	width: 300px;
 	margin: 100px auto 0;
 	padding: 50px 0px 40px;
@@ -38,13 +38,14 @@ body {
 	color: white;
 	font-size: 18px;
 }
-#user, #pass {
+#menu #pass, #menu input[type=text], #menu select {
 	width: 60%;
+	height: 30px;
 	margin: 0px auto;
 	text-align: center;
 	border-radius: 5px;
 }
-#submit {
+.btn {
 	background:    #3d85c6;
 	background:    linear-gradient(#3d85c6, #073763);
 	border-radius: 5px;
@@ -55,4 +56,18 @@ body {
 	text-align:    center;
 	text-shadow:   1px 1px #000000;
 	border:        0;
+	cursor:		   pointer;
+}
+.btn[disabled] {
+	cursor: no-drop;
+}
+.btn.green {
+	background:    lightgreen;
+	background:    linear-gradient(lightgreen, green);
+}
+#cupom .titulo {
+	margin-bottom: 10px;
+}
+#cupom .tipo {
+	margin-bottom: 10px;
 }

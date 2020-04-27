@@ -1,5 +1,6 @@
 <?php
 require_once('conf.php');
+#var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,30 +10,12 @@ require_once('conf.php');
 	<meta charset="UTF-8">
 	<title>Rickstore <?=$page_name?></title>
 	<link rel="stylesheet" href="style.css">
+	<link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body>
 	<div id='wrapper'>
 		<div id='header'>
-			<form id='form-busca'>
-				<input id='busca' type='text' placeholder="Buscar produtos" maxlength="200" />
-				<span class='recentes'></span>
-				<img class='buscar' src='img/search.png' onclick='$("#form-busca").submit()'/>
-				<input class='hide' type='submit'/>
-			</form>
-
-		<?php if ($_SESSION['login']) { ?>
-			<div id='menu'>
-				<a href='#'>Minha Conta</a>
-				<a href='#'>Carrinho</a>
-				<a id='logout' href='#'>Sair</a>
-			</div>
-		<?php }else{ ?>
-			<form id='form-login'>
-				<span class='aviso'><?=$_GET['aviso']?></span>
-				<input id='login' type='text' placeholder='Login' maxlength="50" value='admin'/>
-				<input id='senha' type='password' placeholder='Senha' maxlength="50" value='123'/>
-				<input class='btn' type='submit' value='Entrar'/>
-				<img class='loading' src='img/loading.gif'/>
-			</form>
-		<?php } ?>
+			<?php include('menu.php'); ?>
 		</div>
+		<div id='main'>
+			<div id='load'>

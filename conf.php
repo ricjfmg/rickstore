@@ -3,7 +3,6 @@
 error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 ini_set('memory_limit','256M');
 set_time_limit(60);
-
 header("Content-type: text/html; charset=utf-8");
 date_default_timezone_set('America/Sao_Paulo');
 session_start();

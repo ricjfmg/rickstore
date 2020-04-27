@@ -1,10 +1,10 @@
 <?php
 require_once('header.php');
 
-$r = $db->query("SELECT id, nome, valor, descricao FROM produto ORDER BY nome") or die(mysql_error());
+$r = $db->query("SELECT id, nome, valor, descricao FROM produto ORDER BY nome") or die(mysqli_error($db));
 $rows = $r->fetch_all(MYSQLI_ASSOC);
 ?>
-<div id='main'>
+
 	<div id='resultados-busca'>
 	<?php
 	#echo "<pre>"; var_dump($rows); echo "</pre>";
@@ -20,7 +20,7 @@ $rows = $r->fetch_all(MYSQLI_ASSOC);
 	}
 	?>
 	</div>
-</div>
+
 <?php
 require_once('footer.php');
 ?>
