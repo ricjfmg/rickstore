@@ -1,0 +1,153 @@
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+ol, ul {
+  list-style: none;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+@font-face {
+	font-family: 'Roboto';
+	src: url('../Roboto-Regular.ttf');
+	src: url('../Roboto-Regular.ttf') format('truetype');
+}
+body {
+	font-family: 'Roboto';
+	background-color: grey;
+	text-shadow: 1px 1px lightgrey;
+}
+.btn {
+	background:    #3d85c6;
+	background:    linear-gradient(#3d85c6, #073763);
+	border-radius: 5px;
+	padding:       6px 14px;
+	color:         #ffffff;
+	display:       inline-block;
+	font:          normal normal 18px/1 "Roboto", sans-serif;
+	text-align:    center;
+	text-shadow:   1px 1px #000000;
+	border:        0;
+	cursor:		   pointer;
+}
+.btn[disabled] {
+	cursor: no-drop;
+}
+.btn.green {
+	background:    lightgreen;
+	background:    linear-gradient(lightgreen, green);
+}
+.grid {
+	margin: 10px auto;
+}
+.grid img {
+	cursor: pointer;
+	width: 18px;
+	margin: 0 2px;
+}
+#login {
+	width: 300px;
+	margin: 100px auto 0;
+	padding: 50px 0px 40px;
+	background-color: #8585ad;
+	border-radius: 10px;
+	box-shadow: 5px 5px #33334d;
+	text-align: center;
+	color: white;
+	font-size: 18px;
+}
+#login input[type=text], #login input[type=password], #login select {
+	width: 60%;
+	height: 30px;
+	margin: 0px auto;
+	text-align: center;
+	border-radius: 5px;
+}
+#menu {
+	float: left;
+	width: 15%;
+	max-width: 150px;
+	min-height: 800px;
+	margin: 10px 0 10px 10px;
+	padding: 50px 0px 40px;
+	background-color: #8585ad;
+	border-radius: 10px;
+	box-shadow: 5px 5px #33334d;
+	text-align: center;
+	color: white;
+	font-size: 18px;
+}
+#menu .btn {
+	width: 100px;
+}
+#load {
+	float: left;
+	width: 80%;
+	min-height: 800px;
+	margin: 7px 0 10px 2%;
+	padding: 20px;
+	background-color: lightgrey;
+	border-radius: 10px;
+	box-shadow: 5px 5px #33334d;
+	text-align: center;
+	color: black;
+	font-size: 16px;
+}
+#load .titulo {
+	margin: 10px 0;
+}
+#load input[type=text], #load input[type=number], #load select {
+	width: 20%;
+	height: 25px;
+	margin: 3px auto 0;
+	text-align: left;
+	border-radius: 5px;
+}
+#load input.qtd {
+	width: 60px;
+	text-align: right;
+}
+#load input.valor {
+	width: 120px;
+	text-align: right;
+}
+#load label {
+	float: left;
+	width: 52%;
+	margin: 0px 25%;
+	padding: 2px 4px;
+	text-align: left;
+	line-height: 30px;
+	border: 1px dashed grey;
+}
+#load label input, #load label select {
+	float: right;
+}
+#load label textarea {
+	float: right;
+	width: 100%;
+	height: 100px;
+	resize: none;
+}
+#form-cupom .tipo {
+	margin-bottom: 10px;
+}
+#form-produto {
+	float: left;
+	width: 70%;
+	margin: 0 15% 40px;
+}
+#load #form-produto .nome {
+	width: 200px;
+	height: 25px;
+}
