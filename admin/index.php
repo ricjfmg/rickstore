@@ -1,37 +1,5 @@
 <?php
 require_once('../conf.php');
-#var_dump($_SESSION);
-#var_dump($_POST);
-?>
-<?php
-if ($_POST['gerar_cupom']) {
-	if (!$_POST['tipo'] || !$_POST['cliente']) die('Selecione tipo e cliente.');
-	$codigo = substr(strtoupper(md5(uniqid())), 0, 8);
-	$sql = "INSERT INTO cupom (id_cliente, tipo, codigo) VALUES ($_POST[cliente], $_POST[tipo], '$codigo')";
-	#die($sql);
-	if($db->query($sql)) die("1");
-	else die('Erro, gere novamente.');
-}
-if ($_POST['cupons']) {
-	include('cupons.php');
-	die;
-}
-if ($_POST['produtos']) {
-	include('produtos.php');
-	die;
-}
-if ($_POST['novo_produto']) {
-	var_dump($_POST);
-	var_dump($_FILES);
-	$img = getimagesize($_FILES["img"]["tmp_name"]) or die('1');
-	$w = $img[0];
-	$h = $img[1];
-	$tipo = $img[mime];
-	$permitidos = array('image/jpg', 'image/jpeg', 'image/png');
-	if (!in_array($tipo, $permitidos)) die('1');
-	var_dump($_FILES['img']['size']);###
-	die;
-}
 
 if ($_POST['logout']) {
 	unset($_SESSION['login_adm']);
@@ -79,8 +47,10 @@ $("#login").submit(function() {
 	include('header.php');
 ?>
 	<div id='menu'>
+		<input type='button' value='Pedidos' onclick="pedidos()" class='btn'/><br><br>
 		<input type='button' value='Produtos' onclick="produtos()" class='btn'/><br><br>
 		<input type='button' value='Cupons' onclick="cupons()" class='btn'/><br><br>
+		<input type='button' value='Relatório' onclick="relatorio()" class='btn'/><br><br>
 		<input type='button' value='Logout' onclick="logout()" class='btn'/><br><br>
 		<div id='loading'></div>
 	</div>

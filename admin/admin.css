@@ -142,12 +142,42 @@ body {
 #form-cupom .tipo {
 	margin-bottom: 10px;
 }
+#xls {
+	width: 26px;
+    position: relative;
+    top: 7px;
+    left: 7px;
+    cursor: pointer;
+}
+#toggle-novo {
+	cursor: pointer;
+	color: darkblue;
+	font-size: 20px;
+}
 #form-produto {
 	float: left;
-	width: 70%;
+	width: 76%;
 	margin: 0 15% 40px;
+	height: 0px;
+	overflow: hidden;
+	transition: height 0.5s;
+}
+#form-produto .taxa {
+	float: none;
+	width: 29px !important;
+}
+#form-estoque .taxa {
+	display: block;
+	margin: 0 auto;
+	width: 29px !important;
 }
 #load #form-produto .nome {
 	width: 200px;
 	height: 25px;
+}
+#pedidos .chk {
+	cursor: pointer;
+}
+#filtro-pedidos {
+	width: auto !important;
 }

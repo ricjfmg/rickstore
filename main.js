@@ -74,7 +74,7 @@ $(document).on('submit', '#form-login', function(e) {
 		$("#senha").addClass('alerta');
 		//$(".aviso").text('Digite login e senha');
 	}
-	return false;	
+	return false;
 });
 
 $(document).on('submit', '#form-cadastro', function(e) {
@@ -247,7 +247,6 @@ $(document).on('click', '#carrinho .proximo', function(e) {
 	});
 	var carrinho_texto = carrinho.join('|');
 	localStorage.setItem('carrinho', carrinho_texto);
-	console.log(produtos);
 	carrega_pagina('pedido.php', {produtos: produtos}, 'Pedido');
 });
 
@@ -296,7 +295,6 @@ $(document).on('click', '#desconto .aplicar', function(e) {
 });
 
 $(document).on('change', "#endereco_cliente", function(e) {
-	console.log($(this).val());
 	if ($(this).val() == 0) $("#form-endereco").show();
 	else $("#form-endereco").hide();
 });
@@ -342,7 +340,6 @@ $(document).on('click', '#pedido .finalizar', function(e) {
 	};
 
 	$.post('pedido.php', post, function(r) {
-		console.log(r);
 		if (r==1) {
 			localStorage.setItem('carrinho', '');
 			alert('Pedido concluído.');
@@ -351,6 +348,38 @@ $(document).on('click', '#pedido .finalizar', function(e) {
 	});
 });
 
-$(document).on('click', '#conta .pedido', function(e) {
-	carrega_pagina('pedido.php', {id_pedido: $(this).data('id')}, 'Pedido');
+$(document).on('click', '#conta .pedido .ver', function(e) {
+	var id = $(this).closest('.pedido').data('id');
+	carrega_pagina('pedido.php?'+id, {id_pedido: id}, 'Pedido');
+});
+
+$(document).on('click', '.pedido .pagar', function(e) {
+	var id = $(this).closest('.pedido').data('id');
+	carrega_pagina('pagamento.php?'+id, {id_pedido: id}, 'Pagamento');
+});
+
+$(document).on('submit', '#form-pagamento', function(e) {
+	var campos = $(this).serializeArray();
+	var erro = 0;
+	for (i in campos) {
+		var c = campos[i];
+		if (!c['value']) {
+			$("[name='"+c['name']+"']").addClass('alerta');
+			erro = 1;
+		}
+	}
+	if (erro) {
+		alert('Preencha todos os campos.');
+		return false;
+	}
+	$.post('pagamento.php', $(this).serialize(), function(r) {
+		console.log(r);
+		if (r==1) {
+			alert('Pagamento autorizado! Enviaremos seu pedido assim que possível.');
+			carrega_pagina('conta.php', null, 'Minha Conta');
+		}else {
+			alert('Pagamento não autorizado. Revise seus dados e tente novamente.');
+		}
+	});
+	return false;	
 });

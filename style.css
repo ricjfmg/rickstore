@@ -96,6 +96,9 @@ input[type=text], input[type=password] {
 .btn.green {
     background-color: darkgreen;
 }
+.btn.grey {
+    background-color: dimgrey;
+}
 .divisao {
     float: left;
     width: 100%;
@@ -381,7 +384,38 @@ input[type=text], input[type=password] {
     font-size: 18px;
 }
 #conta .pedido {
-    cursor: pointer;
+    /* cursor: pointer; */
+}
+#conta .pedido div {
+    display: inline;
+    padding: 4px 10px;
+    margin: 0 -2px;
+    border: 1px dashed lightgrey;
+    position: relative;
+}
+#conta .pedido .ver {
+    margin-left: 0px;
+    height: 23px;
+    padding: 0px 2px;
+    position: absolute;
+    top: 4px;
+    left: -30px;
+}
+#conta .pedido .status {
+	min-width: 200px;
+	/* display: inline-block; */
+	/* padding: 0; */
+}
+#conta .pedido .pagar {
+    margin-left: 0px;
+    height: 23px;
+    padding: 0px;
+    position: absolute;
+    top: 4px;
+    right: -44px;
+}
+#form-pagamento .cartao input {
+    margin-right: 10px;
 }
 @media (max-width: 1024px) {
     #resultados-busca .result .img {

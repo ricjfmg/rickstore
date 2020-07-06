@@ -3,7 +3,7 @@ require_once('header.php');
 $busca = $_POST['busca'];
 if (!$busca) $busca = array_keys($_GET)[0];
 
-$sql = "SELECT id, nome, valor, descricao FROM produto WHERE nome LIKE '%$busca%' ORDER BY nome";
+$sql = "SELECT id, nome, valor, descricao FROM produto WHERE nome LIKE '%$busca%' AND inativo=0 ORDER BY nome";
 $r = $db->query($sql) or die(mysqli_error($db));
 $rows = $r->fetch_all(MYSQLI_ASSOC);
 
@@ -22,9 +22,8 @@ if ($busca) {
 
 	<div id='resultados-busca'>
 	<?php
-	#echo "<pre>"; var_dump($rows); echo "</pre>";
 	foreach ($rows as $p) {
-		$valor = number_format($p[valor], 2, ',', '.');
+		$valor = number_format2($p[valor], 2, ',', '.');
 		echo "
 		<div class='result' data-id='$p[id]' data-nome='$p[nome]'>
 			<div class='titulo'>$p[nome]</div>

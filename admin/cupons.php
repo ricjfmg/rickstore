@@ -1,4 +1,15 @@
-<!--<input type='button' value='Voltar' onmouseup="voltar()" /><br><br>-->
+<?php
+require_once('../conf.php');
+
+if ($_POST['gerar_cupom']) {
+	if (!$_POST['tipo'] || !$_POST['cliente']) die('Selecione tipo e cliente.');
+	$codigo = substr(strtoupper(md5(uniqid())), 0, 8);
+	$sql = "INSERT INTO cupom (id_cliente, tipo, codigo) VALUES ($_POST[cliente], $_POST[tipo], '$codigo')";
+	if($db->query($sql)) die("1");
+	else die('Erro, gere novamente.');
+}
+?>
+
 <form id='form-cupom'>
 	<center class='titulo'>Gerar Cupom</center>
 	<select class='tipo' name='tipo'>

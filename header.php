@@ -1,6 +1,5 @@
 <?php
 require_once('conf.php');
-#var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html>

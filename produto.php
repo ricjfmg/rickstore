@@ -1,6 +1,20 @@
 <?php
-require_once('header.php');
+require_once('conf.php');
 $id_produto = $_POST['id'];
+
+if ($_POST['txt']) {
+	$id_cliente = $_SESSION['id_cliente'];
+	if (!$id_cliente) die('1');
+
+	$sql = "INSERT INTO produto_comentario (id_produto, id_cliente, texto, datahora)
+			VALUES ($id_produto, $id_cliente, '$_POST[txt]', NOW())";
+	$r = $db->query($sql) or die(mysqli_error($db));
+	if ($r) die('2');
+	die;
+}
+
+require_once('header.php');
+
 if (!$id_produto) $id_produto = array_keys($_GET)[0];
 
 if (!$id_produto) die('<br><center>Erro</center>');
@@ -8,20 +22,7 @@ if (!$id_produto) die('<br><center>Erro</center>');
 $cliente = explode(' ', $_SESSION['nome']);
 $cliente = $cliente[0].' '.substr(array_pop($cliente), 0, 1).'.';
 
-if ($_POST['txt']) {
-	#var_dump($_POST);
-	$id_cliente = $_SESSION['id_cliente'];
-	if (!$id_cliente) die('1');
-
-	$sql = "INSERT INTO produto_comentario (id_produto, id_cliente, texto, datahora)
-			VALUES ($id_produto, $id_cliente, '$_POST[txt]', NOW())";
-	$r = $db->query($sql) or die(mysqli_error($db));
-	#var_dump($r);
-	if ($r) die('2');
-	die;
-}
-
-$r = $db->query("SELECT id, nome, valor, descricao FROM produto WHERE id=$id_produto") or die(mysqli_error($db));
+$r = $db->query("SELECT id, nome, valor, descricao, qtd FROM produto WHERE id=$id_produto") or die(mysqli_error($db));
 $p = $r->fetch_assoc();
 if (!$p) die("<center>Produto não encontrado.</center>");
 
@@ -61,14 +62,18 @@ else
 
 	<div id='info-produto'>
 <?php
-#echo "<pre>"; var_dump($rows); echo "</pre>";
-$valor = number_format($p[valor], 2, ',', '.');
+$valor = number_format2($p[valor], 2, ',', '.');
+
+if ($p[qtd])
+	$adicionar = "<input class='add btn blue' data-id='$p[id]' type='button' value='Adicionar ao carrinho'/>";
+else
+	$adicionar = "<input class='btn grey' disabled type='button' value='Fora de Estoque'/>";;
 echo "
 	<div class='titulo'>$p[nome]</div>
 	<div class='img' style='background-image:url(produtos/$p[id].jpg)'></div>
 	<div class='desc'>
 		<h3>Preço:</h3> <div class='preco'>R$<span class='valor'>$valor</span></div>
-		<input class='add btn blue' data-id='$p[id]' class='btn' type='button' value='Adicionar ao carrinho'/>
+		$adicionar
 		<br><br>
 		<h2>Descrição do produto:</h2>
 		<br>

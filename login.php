@@ -1,9 +1,7 @@
 <?php
 require_once('conf.php');
-#var_dump($_POST); die;
 
 if ($_POST['cadastro']) {
-	#var_dump($_POST); die;
 
 	$r = $db->query("SELECT 1 FROM cliente WHERE login='{$_POST['login']}' OR email='{$_POST['email']}'");
 	if ($r->num_rows) die('0');

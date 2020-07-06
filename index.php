@@ -1,15 +1,14 @@
 <?php
 require_once('header.php');
 
-$r = $db->query("SELECT id, nome, valor, descricao FROM produto ORDER BY nome") or die(mysqli_error($db));
+$r = $db->query("SELECT id, nome, valor, descricao FROM produto WHERE inativo=0 ORDER BY nome") or die(mysqli_error($db));
 $rows = $r->fetch_all(MYSQLI_ASSOC);
 ?>
 
 	<div id='resultados-busca'>
 	<?php
-	#echo "<pre>"; var_dump($rows); echo "</pre>";
 	foreach ($rows as $p) {
-		$valor = number_format($p[valor], 2, ',', '.');
+		$valor = number_format2($p[valor], 2, ',', '.');
 		echo "
 		<div class='result' data-id='$p[id]'>
 			<div class='titulo'>$p[nome]</div>

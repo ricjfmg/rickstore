@@ -36,9 +36,10 @@ if ($_POST['finalizar']) {
 		$r = $db->query($sql);
 		$prod = $r->fetch_assoc();
 		$valor = $prod['valor'];
+		$taxas += $taxa = $prod['valor']*0.375;
 		$total += $produtos[$id_prod] = $qtd*$valor;
-		$sql = "INSERT INTO pedido_produto (id_pedido, id_produto, qtd, valor)
-				VALUES ($id_pedido, $id_prod, $qtd, $valor)";
+		$sql = "INSERT INTO pedido_produto (id_pedido, id_produto, qtd, valor, taxas)
+				VALUES ($id_pedido, $id_prod, $qtd, $valor, $taxa)";
 		$db->query($sql);
 	}
 
@@ -59,7 +60,7 @@ if ($_POST['finalizar']) {
 		$db->query($sql);
 	}
 	
-	$sql = "UPDATE pedido SET valor=$total WHERE id=$id_pedido";
+	$sql = "UPDATE pedido SET valor=$total, taxas=$taxas WHERE id=$id_pedido";
 	$db->query($sql);
 
 	die("1");
@@ -79,7 +80,6 @@ if (isSet($_POST['cupom'])) {
 ###################################################################################################
 
 require_once('header.php');
-
 $id_pedido = $_POST['id_pedido'];
 if (!$id_pedido) $id_pedido = array_keys($_GET)[0];
 
@@ -89,19 +89,25 @@ if ($_POST['produtos']) {
 	$sql = "SELECT id, nome, valor FROM produto WHERE id IN ($ids) ORDER BY field(id,$ids)";
 	$r = $db->query($sql) or die(mysqli_error($db));
 	$rows = $r->fetch_all(MYSQLI_ASSOC);
-	if (!$rows) $txt = "<br><center class='vazio'>Erro.</center>";
+	if (!$rows) $txt = "<br><center class='vazio'>Erro 1.</center>";
 
 }elseif ($id_pedido) {
-	$sql = "SELECT id_produto 'id', p.nome, qtd, pp.valor
+	$sql = "SELECT id_cliente, status FROM pedido WHERE id=$id_pedido ORDER BY id DESC";
+	$r = $db->query($sql) or die(mysqli_error($db));
+	$r = $r->fetch_assoc();
+   	$pedido_cliente = $r['id_cliente'];
+   	$status = $r['status'];
+   	if ($pedido_cliente <> $_SESSION[id_cliente]) $txt = "<br><center class='vazio'>Acesso Negado.</center>";
+
+	$sql = "SELECT id_produto 'id', p.nome, pp.qtd, pp.valor, pp.taxas
 			FROM pedido_produto pp LEFT JOIN produto p ON pp.id_produto=p.id
 			WHERE id_pedido=$id_pedido";
 	$r = $db->query($sql) or die(mysqli_error($db));
 	$rows = $r->fetch_all(MYSQLI_ASSOC);
-	#echo '<pre>'; var_dump($rows); echo '</pre>';
-	if (!$rows) $txt = "<br><center class='vazio'>Erro.</center>";
+	if (!$rows) $txt = "<br><center class='vazio'>Erro 2.</center>";
 
 }
-	else $txt = "<br><center class='vazio'>Erro.</center>";
+	else $txt = "<br><center class='vazio'>Erro 3.</center>";
 ?>
 
 	<div id='grid'>
@@ -118,7 +124,7 @@ else {
 	<?php
 	foreach($rows as $r) {
 		if (!$r['id']) {
-			$valor = number_format($r[valor], 2, ',', '');
+			$valor = number_format2(abs($r[valor]), 2, ',', '');
 			$desconto_div = "
 			<div class='linha' id='desconto'>
 				<span class='nome'>Desconto:</span>
@@ -127,17 +133,25 @@ else {
 			continue;
 		}
 		$qtd = $id_pedido ? $r[qtd] : $produtos[$r[id]];
-		$total += $valor = $r[valor]*$qtd;
-		$valor = number_format($valor, 2, ',', '');
+		$taxas += $taxa = ($r[valor] * 0.375) * $qtd;
+		$total += $valor = ($r[valor] * 0.625) * $qtd;
+
+		$valor = number_format2($valor, 2, ',', '');
+		$taxa = number_format2($taxa, 2, ',', '');
+
+		$info = "title='Taxas e Impostos: R$$taxa' style='cursor:help'";
 		echo "
 		<div class='linha prod' data-id='$r[id]' data-qtd='$qtd'>
 			<span class='nome'>$r[nome] (&times;$qtd):</span>
-			R$ <span class='valor'>$valor</span>
+			R$ <span class='valor' $info>$valor</span>
 		</div>";
 	}
 
+
 	$total += 10;
-	$total = number_format($total, 2, ',', '');
+	$total += $taxas;
+	$total = number_format2($total, 2, ',', '');
+	$taxas = number_format2($taxas, 2, ',', '');
 
 	if (!$id_pedido) {
 		if ($_SESSION['id_cliente'])
@@ -159,10 +173,20 @@ else {
 			$finalizar
 		</div>";
 	}else{
-
+		if (!$status) {
+			$acoes = "
+				<div class='linha pedido' data-id='$id_pedido'>
+					<input class='pagar btn blue' value='Pagar' type='button'/>
+				</div>
+			";
+		}
 	}
 
 	echo "
+		<div class='linha'>
+			<span class='nome'>Taxas e Impostos:</span>
+			R$ <span class='valor'>$taxas</span>
+		</div>
 		<div class='linha'>
 			<span class='nome'>Taxa de Entrega:</span>
 			R$ <span class='valor'>10,00</span>

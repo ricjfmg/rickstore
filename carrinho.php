@@ -10,7 +10,7 @@ foreach($_POST['carrinho'] as $c) {
 $ids = implode(',', $ids);
 
 if ($ids) {
-	$sql = "SELECT id, nome, valor FROM produto WHERE id IN ($ids) ORDER BY field(id,$ids)";
+	$sql = "SELECT id, nome, valor, qtd FROM produto WHERE id IN ($ids) ORDER BY field(id,$ids)";
 	$r = $db->query($sql) or die(mysqli_error($db));
 	$rows = $r->fetch_all(MYSQLI_ASSOC);
 	if (!$rows) $txt = "<br><center class='vazio'>Sem produtos no carrinho.</center>";
@@ -31,12 +31,12 @@ else {
 		<br><br>
 	<?php
 	foreach($rows as $r) {
-		$valor = number_format($r[valor], 2, ',', '.');
+		$valor = number_format2($r[valor], 2, ',', '.');
 		$qtd = $carrinho[$r[id]];
 		echo "
 		<div class='linha p-$r[id]'>
 			<label for='q-$r[id]' class='nome'>$r[nome]</label>
-			<input class='qtd' type='number' value='$qtd' min=0 max=999 required data-id='$r[id]'/>
+			<input class='qtd' type='number' value='$qtd' min=0 max=$r[qtd] required data-id='$r[id]'/>
 			&times; R$ <span class='valor'>$valor</span>
 			<input class='remove btn' data-id='$r[id]' data-nome='$r[nome]' type='button' value='Remover'/>
 		</div>";
